@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "cook-book-study",
+    "slug": "cook-book-study",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "cook-book-study"
+}

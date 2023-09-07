@@ -1,0 +1,2 @@
+yarn add @react-native-async-storage/async-storage @react-native-seoul/masonry-list @react-navigation/bottom-tabs @react-navigation/native @react-navigation/native-stack
+yarn add axios nativewind react-native-heroicons react-native-reanimated react-native-responsive-screen react-native-safe-area-context react-native-screens react-native-webview react-native-youtube-iframe tailwindcss

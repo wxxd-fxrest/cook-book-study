@@ -1,11 +1,53 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 import styled from "styled-components";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {BellIcon, MagnifyingGlassIcon} from 'react-native-heroicons/outline'
+import Categories from "../components/Categories";
+import axios from 'axios';
+import Recipes from "../components/Recipes";
 
 const HomeScreen = () => {
+    const [activeCategory, setActiveCategory] = useState('Beef');
+    const [categories, setCategories] = useState([]);
+    const [meals, setMeals] = useState([]);
+
+    useEffect(()=>{
+        getCategories();
+        getRecipes();
+    },[]);
+    
+    const handleChangeCategory = category => {
+        getRecipes(category);
+        setActiveCategory(category);
+        setMeals([]);
+    };
+
+    const getCategories = async() => {
+        try {
+        const response = await axios.get('https://themealdb.com/api/json/v1/1/categories.php');
+        // console.log('got categories: ',response.data);
+            if(response && response.data){
+                setCategories(response.data.categories);
+            }
+        } catch(err) {
+            console.log('error: ',err.message);
+        }
+    };
+
+    const getRecipes = async(category="Beef") => {
+        try {
+        const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+        // console.log('got recipes: ',response.data);
+            if(response && response.data){
+                setMeals(response.data.meals);
+            }
+        } catch(err) {
+            console.log('error: ',err.message);
+        }
+    };
+
     return (
         <Container>
             <StatusBar style="dark"/>
@@ -43,11 +85,11 @@ const HomeScreen = () => {
                 </SearchContainer>
 
                 <CategoryContainer>
-                    {/* Categories 컴포넌트 */}
+                    { categories.length>0 && <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} /> }
                 </CategoryContainer>
 
                 <RecipeContainer>
-                    {/* Recipes 컴포넌트 */}
+                    <Recipes meals={meals} categories={categories} />
                 </RecipeContainer>
             </ScrollBox>
         </Container>
